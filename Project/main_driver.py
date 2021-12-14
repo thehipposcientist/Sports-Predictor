@@ -9,7 +9,19 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowTitle("Who's Winning")
         self.setFixedWidth(1100)
         self.setFixedHeight(900)
+        self.actionNFL.triggered.connect(self.NFL)
+        self.actionNBA.triggered.connect(self.NBA)
+        self.actionMLB.triggered.connect(self.MLB)
 
+    def NFL(self):
+        self.header.setText("This Weeks Games in the NFL")
+        NFL.run_nfl()
+
+    def NBA(self):
+        self.header.setText("This Weeks Games in the NBA")
+
+    def MLB(self):
+        self.header.setText("This Weeks Games in the MLB")
 stylesheet = """
     .QWidget {
         background-color: #272E33;

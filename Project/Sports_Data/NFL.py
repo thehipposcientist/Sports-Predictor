@@ -9,8 +9,22 @@ import re
 import keras
 import seaborn as sns
 
-def run_nfl():
-    pass
+
+def get_current_week():
+    # creating the date object of today's date
+    todays_date = date.today()
+
+    # web scrape CBS for current week
+    url = 'https://www.cbssports.com/nfl/schedule/'
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    results = soup.find(id="PageTitle-header").text
+    try:
+        current_week = int(re.search(r'\d+', results).group())
+    except:
+        print('Not in season')
+
+    return current_week, todays_date    
 
 def collect_nfl_information():
     # This function collects NFL data and constructs 3 seperate NFL related dataframes
@@ -33,21 +47,13 @@ def collect_nfl_information():
     df['Fumbles'] = [x.fumbles for x in teams]
     df['Interceptions'] = [x.interceptions for x in teams]
 
-    # creating the date object of today's date
-    todays_date = date.today()
+def get_current_schedule():
 
-    # web scrape CBS for current week
-    url = 'https://www.cbssports.com/nfl/schedule/'
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser")
-    results = soup.find(id="PageTitle-header").text
-    try:
-        current_week = int(re.search(r'\d+', results).group())
-    except:
-        print('Not in season')
+    current_week,todays_date = get_current_week()
+    year = todays_date.year
 
     games_today = Boxscores(current_week, todays_date.year)
-    # Prints a dictionary of all matchups for week 1 of 2017
+    # Prints a dictionary of all matchups for current week of current year
 
     current_schedule = pd.DataFrame(columns = ['Away Team', 'Home Team', 'Away Score', 'Home Score', 'Winner'])
 
@@ -59,11 +65,15 @@ def collect_nfl_information():
         current_schedule['Home Score'] =  [item['home_score'] for item in games_today.games[key]]
         current_schedule['Winner'] =  [item['winning_name'] for item in games_today.games[key]]
 
+    return current_schedule
+
+def get_history_of_seasons():
     # Construct a dataframe containing the last 5 years of games
     history_of_seasons = pd.DataFrame(columns = ['Away Team', 'Home Team', 'Away Score', 'Home Score', 'Winner'])
 
+
+    week,todays_date = get_current_week()
     year = todays_date.year
-    week = current_week-1
     away = []
     home = []
     away_score = []
@@ -91,4 +101,4 @@ def collect_nfl_information():
 
     # Match today's names with the previous ones to help machine learning algorithm
     history_of_seasons=history_of_seasons.replace({'Oakland Raiders': 'Las Vegas Raiders', 'St. Louis Rams':'Los Angeles Rams',
-                           'Washington Redskins':'Washington Football Team'}, regex=True)
+                        'Washington Redskins':'Washington Football Team'}, regex=True)    

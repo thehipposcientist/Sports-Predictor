@@ -15,13 +15,14 @@ class Ui(QtWidgets.QMainWindow):
 
     def NFL(self):
         self.header.setText("This Weeks Games in the NFL")
-        NFL.run_nfl()
+        NFL.get_current_schedule()
 
     def NBA(self):
         self.header.setText("This Weeks Games in the NBA")
 
     def MLB(self):
         self.header.setText("This Weeks Games in the MLB")
+        
 stylesheet = """
     .QWidget {
         background-color: #272E33;

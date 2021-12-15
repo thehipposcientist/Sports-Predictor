@@ -9,19 +9,34 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowTitle("Who's Winning")
         self.setFixedWidth(1100)
         self.setFixedHeight(900)
-        self.actionNFL.triggered.connect(self.NFL)
+        self.actionSChedule.triggered.connect(self.NFL)
         self.actionNBA.triggered.connect(self.NBA)
         self.actionMLB.triggered.connect(self.MLB)
 
     def NFL(self):
         self.header.setText("This Weeks Games in the NFL")
-        NFL.get_current_schedule()
+        curr_sched = NFL.get_curr_sched()
+        self.create_widget(0, 0)
 
     def NBA(self):
         self.header.setText("This Weeks Games in the NBA")
 
     def MLB(self):
         self.header.setText("This Weeks Games in the MLB")
+
+    def create_widget(self, row, col):
+        self.frame = QtWidgets.QFrame(self.scrollAreaWidgetContents)
+        self.frame.setMinimumSize(QtCore.QSize(1000, 150))
+        self.frame.setMaximumSize(QtCore.QSize(1000, 150))
+        self.frame.setStyleSheet('background-color: black;')
+        # self.frame = QtWidgets.QFrame(self.gridLayoutWidget)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setStyleSheet('background-color: black;')
+        self.frame.setObjectName("frame")
+        self.gridLayout.addWidget(self.frame, row, col, 1, 1)
+        # self.scrollArea.setWidget(self.scrollAreaWidgetContents)   
+
         
 stylesheet = """
     .QWidget {
@@ -38,8 +53,11 @@ stylesheet = """
     .QMenuBar, .QMenu {
         background-color: #6B7C89;
         color: white;
-        font-size: 20px;
         font-weight: bold;
+    }
+
+    .Qmenu{
+        font-size: 10px;
     }
 
     .actionNFL:hover {

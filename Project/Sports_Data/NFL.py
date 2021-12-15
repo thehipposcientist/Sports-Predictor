@@ -9,10 +9,11 @@ import re
 import keras
 import seaborn as sns
 
-
+# function to get current week in the NFL
 def get_current_week():
     # creating the date object of today's date
     todays_date = date.today()
+    year = todays_date.year
 
     # web scrape CBS for current week
     url = 'https://www.cbssports.com/nfl/schedule/'
@@ -24,9 +25,10 @@ def get_current_week():
     except:
         print('Not in season')
 
-    return current_week, todays_date    
+    return current_week, year    
 
-def collect_nfl_information():
+# function that retusn team nfl statistics
+def get_nfl_team_stats():
     # This function collects NFL data and constructs 3 seperate NFL related dataframes
     teams = Teams()
     df = pd.DataFrame(columns = ['Name', 'Abbreviation', 'Penalties', 'Wins', 'Pass Attempts', 'Rush Attempts', 'First Downs',
@@ -47,43 +49,49 @@ def collect_nfl_information():
     df['Fumbles'] = [x.fumbles for x in teams]
     df['Interceptions'] = [x.interceptions for x in teams]
 
-def get_current_schedule():
+# function that returns this week schedule in a list of lists
+def get_curr_sched():
 
-    current_week,todays_date = get_current_week()
-    year = todays_date.year
-
-    games_today = Boxscores(current_week, todays_date.year)
-    # Prints a dictionary of all matchups for current week of current year
-
-    current_schedule = pd.DataFrame(columns = ['Away Team', 'Home Team', 'Away Score', 'Home Score', 'Winner'])
-
-    # Construct this weeks schedule dataframe
-    for key in games_today.games.keys():
-        current_schedule['Away Team'] =  [item['away_name'] for item in games_today.games[key]]
-        current_schedule['Home Team'] =  [item['home_name'] for item in games_today.games[key]]
-        current_schedule['Away Score'] =  [item['away_score'] for item in games_today.games[key]]
-        current_schedule['Home Score'] =  [item['home_score'] for item in games_today.games[key]]
-        current_schedule['Winner'] =  [item['winning_name'] for item in games_today.games[key]]
-
-    return current_schedule
-
-def get_history_of_seasons():
-    # Construct a dataframe containing the last 5 years of games
-    history_of_seasons = pd.DataFrame(columns = ['Away Team', 'Home Team', 'Away Score', 'Home Score', 'Winner'])
-
-
-    week,todays_date = get_current_week()
-    year = todays_date.year
+    current_week, year = get_current_week()
     away = []
     home = []
     away_score = []
     home_score = []
     winner = []
 
-    while year >= todays_date.year-5:
-        if year != todays_date.year: week = 16
+    games_today = Boxscores(current_week, year)
+    # Prints a dictionary of all matchups for current week of current year
+
+    # Construct this weeks schedule array
+    for key in games_today.games.keys():
+        away.extend(item['away_name'] for item in games_today.games[key])
+        home.extend(item['home_name'] for item in games_today.games[key])
+        away_score.extend(item['away_score'] for item in games_today.games[key])
+        home_score.extend(item['home_score'] for item in games_today.games[key])
+        winner.extend(item['winning_name'] for item in games_today.games[key])
+
+    curr_sched = [away, home, away_score, home_score, winner]
+
+    return curr_sched
+
+# function that returns history of games in a list of lists
+def get_history_of_seasons():
+    # Construct a dataframe containing the last 5 years of games
+    history_of_seasons = pd.DataFrame(columns = ['Away Team', 'Home Team', 'Away Score', 'Home Score', 'Winner'])
+
+    week, year = get_current_week()
+    week = week-1
+    away = []
+    home = []
+    away_score = []
+    home_score = []
+    winner = []
+    curr_year = year
+
+    while curr_year >= year-5:
+        if curr_year != year: week = 16
         while week >= 1:
-            previous_games = Boxscores(week, year)
+            previous_games = Boxscores(week, curr_year)
             for key in previous_games.games.keys():
                 away.extend(item['away_name'] for item in previous_games.games[key])
                 home.extend(item['home_name'] for item in previous_games.games[key])
@@ -91,14 +99,8 @@ def get_history_of_seasons():
                 home_score.extend(item['home_score'] for item in previous_games.games[key])
                 winner.extend(item['winning_name'] for item in previous_games.games[key])
             week = week-1 
-        year = year-1
+        curr_year = curr_year-1
 
-    history_of_seasons['Away Team'] =  away
-    history_of_seasons['Home Team'] =  home
-    history_of_seasons['Away Score'] = away_score
-    history_of_seasons['Home Score'] =  home_score
-    history_of_seasons['Winner'] =  winner
+    history = [away, home, away_score, home_score, winner]
 
-    # Match today's names with the previous ones to help machine learning algorithm
-    history_of_seasons=history_of_seasons.replace({'Oakland Raiders': 'Las Vegas Raiders', 'St. Louis Rams':'Los Angeles Rams',
-                        'Washington Redskins':'Washington Football Team'}, regex=True)    
+    return history

@@ -39,9 +39,9 @@
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>110</y>
-      <width>871</width>
+      <x>110</x>
+      <y>90</y>
+      <width>881</width>
       <height>591</height>
      </rect>
     </property>
@@ -53,19 +53,44 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>869</width>
+       <width>879</width>
        <height>589</height>
       </rect>
      </property>
-     <widget class="QListWidget" name="listWidget">
+     <widget class="QWidget" name="gridLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>871</width>
+        <x>-1</x>
+        <y>-1</y>
+        <width>881</width>
         <height>591</height>
        </rect>
       </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QScrollBar" name="verticalScrollBar">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>20</width>
+            <height>591</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
@@ -79,20 +104,42 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuSports">
+   <widget class="QMenu" name="menuNFL">
     <property name="title">
-     <string>Sports</string>
+     <string>NFL</string>
     </property>
-    <addaction name="actionNFL"/>
-    <addaction name="actionNBA"/>
-    <addaction name="actionNCAA_Football"/>
-    <addaction name="actionPremiere_League"/>
-    <addaction name="actionMLB"/>
-    <addaction name="actionChampions_League"/>
+    <addaction name="actionSChedule"/>
+    <addaction name="separator"/>
+    <addaction name="actionHistory"/>
+    <addaction name="separator"/>
+    <addaction name="actionData"/>
    </widget>
-   <addaction name="menuSports"/>
+   <widget class="QMenu" name="menuMLB">
+    <property name="title">
+     <string>MLB</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuNCAAF">
+    <property name="title">
+     <string>NCAAF</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuNBA">
+    <property name="title">
+     <string>NBA</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuPremiere_League">
+    <property name="title">
+     <string>Premiere League</string>
+    </property>
+   </widget>
+   <addaction name="menuNFL"/>
+   <addaction name="menuMLB"/>
+   <addaction name="menuNCAAF"/>
+   <addaction name="menuNBA"/>
+   <addaction name="menuPremiere_League"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNFL">
    <property name="text">
     <string>NFL</string>
@@ -121,6 +168,21 @@
   <action name="actionChampions_League">
    <property name="text">
     <string>Champions League</string>
+   </property>
+  </action>
+  <action name="actionSChedule">
+   <property name="text">
+    <string>Schedule</string>
+   </property>
+  </action>
+  <action name="actionHistory">
+   <property name="text">
+    <string>History</string>
+   </property>
+  </action>
+  <action name="actionData">
+   <property name="text">
+    <string>Data</string>
    </property>
   </action>
  </widget>

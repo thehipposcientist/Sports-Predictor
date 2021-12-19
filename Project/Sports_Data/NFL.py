@@ -9,6 +9,7 @@ import re
 import keras
 import seaborn as sns
 
+
 # function to get current week in the NFL
 def get_current_week():
     # creating the date object of today's date
@@ -58,6 +59,7 @@ def get_curr_sched():
     away_score = []
     home_score = []
     winner = []
+    game_date = []
 
     games_today = Boxscores(current_week, year)
     # Prints a dictionary of all matchups for current week of current year
@@ -69,10 +71,13 @@ def get_curr_sched():
         away_score.extend(item['away_score'] for item in games_today.games[key])
         home_score.extend(item['home_score'] for item in games_today.games[key])
         winner.extend(item['winning_name'] for item in games_today.games[key])
+        game_date.extend(item['boxscore'] for item in games_today.games[key])
 
-    curr_sched = [away, home, away_score, home_score, winner]
+    for i in range(len(game_date)):
+        game_info = Boxscore(game_date[i])
+        game_date[i] = game_info.date    
 
-    return curr_sched
+    return away, home, away_score, home_score, winner, game_date
 
 # function that returns history of games in a list of lists
 def get_history_of_seasons():
@@ -104,3 +109,6 @@ def get_history_of_seasons():
     history = [away, home, away_score, home_score, winner]
 
     return history
+
+def prediction():
+    pass

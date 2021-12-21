@@ -8,7 +8,14 @@ from bs4 import BeautifulSoup
 import re
 import keras
 import seaborn as sns
+import mysql.connector
 
+
+db = mysql.connector.connect(
+    host="localhost",
+    user="Sawyer",
+    passwd="Spermduck94"
+)
 
 # function to get current week in the NFL
 def get_current_week():

@@ -6,6 +6,7 @@ from Sports_Data import NFL, NCAA_Football, NBA, PL, Champions, MLB
 import stylesheet as st
 import time
 from PyQt5.QtGui import QMovie
+import mysql.connector 
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):

@@ -11,6 +11,7 @@ def create_database():
 
 create_database()    
 
+# Not created yet
 TABLES['nfl'] = (
     "CREATE TABLE 'nfl' ("
      "'id' int(11) NOT NULL"

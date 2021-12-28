@@ -9,7 +9,6 @@ import re
 import keras
 import seaborn as sns
 import mysql.connector
-from database import cursor
 
 # function to get current week in the NFL
 def get_current_week():

@@ -20,6 +20,7 @@ class Ui(QtWidgets.QMainWindow):
         self.header.setText("Welcome")
         self.games_view.hide()
 
+    # NFL function to to create list of widgets for this weeks schedule ///ERROR/// 'Boxscore function is not responding' 
     def NFL(self):
         self.clear_widgets()
         self.header.setText("This Weeks Games in the NFL")
@@ -28,6 +29,7 @@ class Ui(QtWidgets.QMainWindow):
         for i in range(len(away)):
             self.create_widget(i, away[i], home[i], home_score[i], away_score[i], game_date[i])
 
+    # NBA function to create list of widgets for today's games ///ERROR/// 'Boxscore function is not responding'
     def NBA(self):
         self.clear_widgets()
         self.header.setText("Todays Game(s) in the NBA")
@@ -35,7 +37,8 @@ class Ui(QtWidgets.QMainWindow):
         away, home, away_score, home_score, winner, game_date = NBA.get_curr_schedule()
         for i in range(len(away)):
             self.create_widget(i, away[i], home[i], home_score[i], away_score[i], game_date[i])
-
+            
+    # MLB function to to create list of widgets for today's games 
     def MLB(self):
         self.clear_widgets()
         self.header.setText("Todays Game(s) in the MLB")
@@ -44,6 +47,7 @@ class Ui(QtWidgets.QMainWindow):
         for i in range(len(away)):
             self.create_widget(i, away[i], home[i], home_score[i], away_score[i], game_date[i])
 
+    # Create each game widget 
     def create_widget(self, row, away, home, home_score, away_score, game_date):
         self.game_frame = QtWidgets.QFrame(self.scrollAreaWidgetContents)
         self.game_frame.setMinimumSize(QtCore.QSize(675, 175))
